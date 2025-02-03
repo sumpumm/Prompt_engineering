@@ -29,4 +29,4 @@ async def groq_endpoint(query_input: Query_input):  # Renamed to groq_endpoint
 
 @app.post("/process_prompt")
 async def process_prompt(prompt: str = Form(..., description="MultiLinePrompt")):
-    return {"message": "Prompt received successfully", "data": prompt}
+    return { "prompt": prompt}
