@@ -1,8 +1,7 @@
-from fastapi import FastAPI, Form
+from fastapi import FastAPI,Form
 from models import *
 from langchain_ollama import OllamaLLM
 from langchain_groq import ChatGroq
-from langchain_core.prompts import ChatPromptTemplate,MessagesPlaceholder
 from langchain_core.messages import HumanMessage,AIMessage
 from prompt import conditional_prompt
 import os
@@ -80,3 +79,7 @@ async def groq_endpoint(query_input: Query_input):
     chat_history.append(HumanMessage(content=instruction))
     chat_history.append(AIMessage(content=response.content))
     return Query_output(response=response.content)
+
+@app.post("/proccess_example")
+async def convert_example_json(example: str = Form()):
+    return {"formatted_example": example}
