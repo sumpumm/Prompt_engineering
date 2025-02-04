@@ -1,8 +1,9 @@
 from langchain_groq import ChatGroq
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.messages import HumanMessage, AIMessage
-import os
 from dotenv import load_dotenv
+import os
+
 
 load_dotenv()
 
@@ -13,6 +14,20 @@ llm =  ChatGroq(
     api_key=api_key,
     temperature=1
 )
+
+prompt_template="""
+    You are a helpful AI assistant. Follow user instructions and answer accordingly.
+    
+    Role: {role}
+    
+    Instruction: {instruction}
+    
+    Context: {context}
+    
+    Example: {example}
+    
+    Question: Before you begin, ask me a few questions that you think will help you create the best output possible.
+"""
 
 chat_history = []
 

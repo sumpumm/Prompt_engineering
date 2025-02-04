@@ -9,11 +9,25 @@ load_dotenv()
 api_key = os.getenv("ANTHROPIC_API_KEY")
 llm = ChatAnthropic(model="claude-3-sonnet-20240229",anthropic_api_key=api_key)
 
+prompt_template="""
+    You are a helpful AI assistant. Follow user instructions and answer accordingly.
+    
+    Role: {role}
+    
+    Instruction: {instruction}
+    
+    Context: {context}
+    
+    Example: {example}
+    
+    Question: Before you begin, ask me a few questions that you think will help you create the best output possible.
+"""
+
 chat_history = []
 
 def main(question):
     prompt_template = ChatPromptTemplate.from_messages([
-        ("system", "You are a helpful AI assistant. Follow user instructions and answer accordingly."),
+        ("system", prompt_template),
         MessagesPlaceholder("chat_history"),  # Ensures chat history persists
         ("human", "{input}"),
     ])
