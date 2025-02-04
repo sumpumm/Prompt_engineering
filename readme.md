@@ -1,1 +1,0 @@
--First the prompt must be passed through process prompt api so that the prompt is converted into JSON acceptable form and then only the processed prompt can be passed to other api endpoints
