@@ -1,85 +1,46 @@
-from fastapi import FastAPI,Form
-from models import *
-from langchain_ollama import OllamaLLM
-from langchain_groq import ChatGroq
+from openai import OpenAI
 from langchain_core.messages import HumanMessage,AIMessage
-from prompt import conditional_prompt
-import os
 from dotenv import load_dotenv
+import os
 load_dotenv()
+api_key = os.getenv("OPENROUTER_API_KEY")
+chat_history = []
 
-api_key = os.getenv("GROQ_API_KEY")
-
-app = FastAPI()
-
-chat_history=[]
-
-@app.post("/chat/ollama",response_model=Query_output)
-async def ollama_endpoint(query_input: Query_input):
-    llm=OllamaLLM(model="llama3",temperature=1)
-    global chat_history
-    role=query_input.role
-    instruction = query_input.instruction
-    context=query_input.context
-    example=query_input.example
-    question=query_input.question
-    
-    prompt_template =conditional_prompt(role=role)
-    formatted_prompt = prompt_template.format_messages(
-        role=role,
-        instruction=instruction,
-        context=context,
-        example=example,
-        question=question,
-        chat_history=chat_history
-    )
-    # print(formatted_prompt)
-
-    response = llm.invoke(formatted_prompt)
-    
-    chat_history.append(HumanMessage(content=instruction))
-    chat_history.append(AIMessage(content=response))
-    # print(chat_history)
-    return Query_output(response=response)
-
-
-# @app.post("/chat/claude", response_model=Query_output)
-# async def claude_endpoint(query_input: Query_input):
-#     question = query_input.prompt
-#     response = claude_main(question)
-#     return Query_output(response=response)
-
-
-@app.post("/chat/groq", response_model=Query_output)
-async def groq_endpoint(query_input: Query_input): 
-    llm =  ChatGroq(
-    model="mixtral-8x7b-32768",
+client = OpenAI(
+    base_url="https://openrouter.ai/api/v1",
     api_key=api_key,
-    max_retries=5,
-    temperature=1
-    ) 
-    global chat_history
-    role=query_input.role
-    instruction = query_input.instruction
-    context=query_input.context
-    example=query_input.example
-    question=query_input.question
-    
-    prompt_template =conditional_prompt(role=role)
-    formatted_prompt = prompt_template.format_messages(
-        role=role,
-        instruction=instruction,
-        context=context,
-        example=example,
-        question=question,
-        chat_history=chat_history
+)
+def ask_llm(prompt):
+    """ Sends a message to the LLM and returns its response """
+    completion = client.chat.completions.create(
+        model="meta-llama/llama-3.3-70b-instruct:free",
+        messages=[{"role": "user", "content": prompt}]
     )
-    response = llm.invoke(formatted_prompt)
-    
-    chat_history.append(HumanMessage(content=instruction))
-    chat_history.append(AIMessage(content=response.content))
-    return Query_output(response=response.content)
+    response = completion.choices[0].message.content
+    return response
 
-@app.post("/proccess_example")
-async def convert_example_json(example: str = Form()):
-    return {"formatted_example": example}
+def main():
+    role = input("Enter the role of the AI (e.g., You are an expert in marketing): ")
+    context = input("Enter the context (e.g., I am selling an online service for healthy eating): ")
+    example = input("Enter an example (e.g., 'Boost Your Energy: Discover the Power of Clean Eating!'): ")
+    instruction = input("\nInstruction: ")
+
+    follow_up_question = ask_llm(
+        f"role: {role}\n\n"
+        f"nstruction: {instruction}\n\n"
+        f"Context: {context}\n\n"
+        f"Example: {example}\n\n"
+        f"Before proceeding, ask the user any necessary questions to create the best possible output.") # the prompt follows RICEQ technique
+    
+    print("\n LLM Follow-Up Question:", follow_up_question)
+    
+    follow_up_answer = input("\nYour Answer: ")
+    
+    chat_history.extend([HumanMessage(content=instruction), AIMessage(content=follow_up_answer)])
+
+    final_output = ask_llm(
+        f"User Instruction: {instruction}\n\n"
+        f"chat history:{chat_history}")
+    print("\nLLM Final Output:", final_output)
+
+main()

@@ -1,50 +1,42 @@
-from langchain_ollama import ChatOllama
-from langchain_core.prompts import ChatPromptTemplate,MessagesPlaceholder
+from openai import OpenAI
 from langchain_core.messages import HumanMessage,AIMessage
+chat_history = []
 
-llm=ChatOllama(model="llama3",temperature=1)
-chat_history=[]
+client = OpenAI(
+    base_url="https://openrouter.ai/api/v1",
+    api_key="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",
+)
+def ask_llm(prompt):
+    """ Sends a message to the LLM and returns its response """
+    completion = client.chat.completions.create(
+        model="meta-llama/llama-3.3-70b-instruct:free",
+        messages=[{"role": "user", "content": prompt}]
+    )
+    response = completion.choices[0].message.content
+    return response
 
-def main(role=None,instruction=None,context=None,example=None,question=None):
-    prompt_template="""
-    You are a helpful AI assistant. Follow user instructions and answer accordingly.
+def main():
+    role = input("Enter the role of the AI (e.g., You are an expert in marketing): ")
+    context = input("Enter the context (e.g., I am selling an online service for healthy eating): ")
+    example = input("Enter an example (e.g., 'Boost Your Energy: Discover the Power of Clean Eating!'): ")
+    instruction = input("\nInstruction: ")
+
+    follow_up_question = ask_llm(
+        f"role: {role}\n\n"
+        f"nstruction: {instruction}\n\n"
+        f"Context: {context}\n\n"
+        f"Example: {example}\n\n"
+        f"Before proceeding, ask the user any necessary questions to create the best possible output.") # the prompt follows RICEQ technique
     
-    Role: {role}
+    print("\n LLM Follow-Up Question:", follow_up_question)
     
-    Instruction: {instruction}
+    follow_up_answer = input("\nYour Answer: ")
     
-    Context: {context}
-    
-    Example: {example}
-    
-    Question: {question}
-    """
-    prompt_template=ChatPromptTemplate.from_messages([
-        ("system",prompt_template),
-        MessagesPlaceholder("chat_history")
-        ])
+    chat_history.extend([HumanMessage(content=instruction), AIMessage(content=follow_up_answer)])
 
-    chain= prompt_template | llm
+    final_output = ask_llm(
+        f"User Instruction: {instruction}\n\n"
+        f"chat history:{chat_history}")
+    print("\nLLM Final Output:", final_output)
 
-    response=chain.invoke({"role": role,"instruction":instruction,"context":context,"example":example,"question":question,"chat_history":chat_history})
-
-    chat_history.extend([
-    HumanMessage(content=instruction),
-    AIMessage(content=response.content)
-    ])
-    
-    return response.content
-
-# role="You are an expert in digital marketing."
-# instruction="I need you to help me create 10 Instagram hooks to generate sales of my product."
-# context="I selling an online service to help people better manage their health by eating healthy."
-# example="""Here are some examples of hooks that have performed well:
-# Fuel Your Body: Top Tips for a Balanced Diet!
-
-# Healthy Eating Made Simple: Quick and Tasty Recipes!
-# Boost Your Energy: Discover the Power of Clean Eating!"""
-
-# question="""Before you begin, ask me a few questions that you think will help you create the best output possible."""
-
-
-# print(main(instruction=instruction))
+main()
