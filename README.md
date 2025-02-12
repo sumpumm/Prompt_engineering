@@ -42,7 +42,6 @@ Hardcode the paramaters instead of taking inputs like:
         Adding a <p> for a short description
         Including an <a> tag to link to an external website"
 
-    """\n
     
 
 ### Code Overview
