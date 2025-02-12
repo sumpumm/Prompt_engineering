@@ -27,16 +27,16 @@ Run the script and follow the prompts:
 - The AI processes the conversation and outputs the final result.
 
 ### Example
-Hardcode the paramaters instead of taking inputs like:\n
-    role = "You are an experienced web developer with expertise in teaching HTML to beginners"\n
-    instruction = "
-    Write a simple HTML code example for students that demonstrates the basic structure of an HTML webpage. The code should include a heading, a paragraph, and a link. 
-    Keep it clean, well-indented, and beginner-friendly.
-    "\n
-    context = "The students are new to HTML and learning how to structure a webpage. The goal is to provide a clear, \n
+Hardcode the paramaters instead of taking inputs like:
+    - role = "You are an experienced web developer with expertise in teaching HTML to beginners"
+    - instruction = "
+    - Write a simple HTML code example for students that demonstrates the basic structure of an HTML webpage. The code should include a heading, a paragraph, and a link. 
+    - Keep it clean, well-indented, and beginner-friendly.
+    "
+    - context = "The students are new to HTML and learning how to structure a webpage. The goal is to provide a clear, 
     easy-to-understand example that introduces fundamental HTML elements.
-    "\n
-    example = "
+    "
+    - example = "
         The code should follow a simple structure, such as:
         Using <h1> for the main heading
         Adding a <p> for a short description
