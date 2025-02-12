@@ -40,7 +40,7 @@ Hardcode the paramaters instead of taking inputs like:
         The code should follow a simple structure, such as:
         Using <h1> for the main heading
         Adding a <p> for a short description
-        Including an <a> tag to link to an external website
+        Including an <a> tag to link to an external website"
 
     """\n
     
