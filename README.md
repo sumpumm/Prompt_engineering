@@ -1,6 +1,6 @@
- ### AI-Powered Dynamic Prompting System
+ ### AI-Powered Dynamic RICEQ Prompting System
 
-This project enables interactive conversations with an AI model using OpenRouter's API. The system dynamically refines user input by generating follow-up questions before providing the final response.
+This project aims to implement the RICEQ technnique of prompting. This project enables interactive conversations with an AI model using OpenRouter's API. The system dynamically refines user input by generating follow-up questions before providing the final response.
 
 ### Features:
 
