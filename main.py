@@ -1,11 +1,11 @@
 from openai import OpenAI
 from langchain_core.messages import HumanMessage,AIMessage
 
-chat_history = []
+chat_history=[]
 
 client = OpenAI(
     base_url="https://openrouter.ai/api/v1",
-    api_key="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",
+    api_key="<Your OPENROUTER API KEY>",
 )
 def ask_llm(prompt):
     """ Sends a message to the LLM and returns its response """
