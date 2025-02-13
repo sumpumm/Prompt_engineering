@@ -14,7 +14,7 @@ This project aims to implement the RICEQ technnique of prompting. This project e
 
 ### Usage
 
-This code is designed to only run once. In each run, when prompt the LLM it asks you a followup question and when you asnwer it, you'll recieve the final output. Run the script and follow the prompts:
+This code is designed to only run once. In each run, when you prompt the LLM it asks you a followup question and when you asnwer it, you'll recieve the final output. Run the script and follow the prompts:
 
 - python main.py
 
