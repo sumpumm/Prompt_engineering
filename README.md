@@ -14,7 +14,7 @@ This project aims to implement the RICEQ technnique of prompting. This project e
 
 ### Usage
 
-Run the script and follow the prompts:
+This code is designed to only run once. In each run, when prompt the LLM it asks you a followup question and when you asnwer it, you'll recieve the final output. Run the script and follow the prompts:
 
 - python main.py
 
@@ -25,6 +25,14 @@ Run the script and follow the prompts:
 - Provide your response.
 
 - The AI processes the conversation and outputs the final result.
+
+### Example
+- Consider the following hardcoded prompt
+  ![prompt](https://github.com/user-attachments/assets/7c30b939-6731-463b-a043-948da1871a83)
+- The LLM asks you a followup question
+ ![fo,llow](https://github.com/user-attachments/assets/079e5d67-e139-43fd-ac07-67c751b0a2b1)
+- The final output
+  ![output](https://github.com/user-attachments/assets/aaaffb40-7950-4ada-a73b-1acff0e4f9dc)
 
 ### Code Overview
 
