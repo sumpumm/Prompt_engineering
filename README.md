@@ -12,6 +12,9 @@ This project aims to implement the RICEQ technnique of prompting. This project e
 
 - Chat History Tracking – Maintains conversation context for accurate responses.
 
+### Install Dependencies
+Clone the project, create a virtual environment and install the dependecies using the command "pip install -r requirements.txt"
+
 ### Usage
 
 This code is designed to only run once. In each run, when you prompt the LLM it asks you a followup question and when you asnwer it, you'll recieve the final output. Run the script and follow the prompts:
