@@ -1,11 +1,16 @@
 from openai import OpenAI
 from langchain_core.messages import HumanMessage,AIMessage
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+key=os.getenv("OPENROUTER_KEY")
 
 chat_history=[]
 
 client = OpenAI(
     base_url="https://openrouter.ai/api/v1",
-    api_key="<Your OPENROUTER API KEY>",
+    api_key=key,
 )
 def ask_llm(prompt):
     """ Sends a message to the LLM and returns its response """
@@ -17,25 +22,10 @@ def ask_llm(prompt):
     return response
 
 def main():
-    role = "You are an expert in digital marketing."
-    
-    instruction = "I need you to help me create 10 Instagram hooks to generate sales of my product."
-    
-    context = "I am  selling an online service to help people better manage their health by eating healthy."
-    
-    example = """
-        Here are some examples of hooks that have performed well:
-        Fuel Your Body: Top Tips for a Balanced Diet!
-
-        Healthy Eating Made Simple: Quick and Tasty Recipes!
-        Boost Your Energy: Discover the Power of Clean Eating!
-    """
-    
-
-    # role = input("Enter the role of the AI (e.g., You are an expert in marketing): ")
-    # context = input("Enter the context (e.g., I am selling an online service for healthy eating): ")
-    # example = input("Enter an example (e.g., 'Boost Your Energy: Discover the Power of Clean Eating!'): ")
-    # instruction = input("\nInstruction: ")
+    role = input("Enter the role of the AI (e.g., You are an expert in marketing): ")
+    context = input("Enter the context (e.g., I am selling an online service for healthy eating): ")
+    example = input("Enter an example (e.g., 'Boost Your Energy: Discover the Power of Clean Eating!'): ")
+    instruction = input("\nInstruction: ")
 
     follow_up_question = ask_llm(
         f"role: {role}\n\n"
