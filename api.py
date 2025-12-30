@@ -33,21 +33,12 @@ async def ollama_endpoint(query_input: Query_input):
         question=question,
         chat_history=chat_history
     )
-    # print(formatted_prompt)
 
     response = llm.invoke(formatted_prompt)
     
     chat_history.append(HumanMessage(content=instruction))
     chat_history.append(AIMessage(content=response))
-    # print(chat_history)
     return Query_output(response=response)
-
-
-# @app.post("/chat/claude", response_model=Query_output)
-# async def claude_endpoint(query_input: Query_input):
-#     question = query_input.prompt
-#     response = claude_main(question)
-#     return Query_output(response=response)
 
 
 @app.post("/chat/groq", response_model=Query_output)
